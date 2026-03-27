@@ -12,4 +12,14 @@ public class Coin : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // Recoger con colisión normal también
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            ScoreManager.Instance.AddCoins(valor);
+            Destroy(gameObject);
+        }
+    }
 }
