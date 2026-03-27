@@ -34,12 +34,15 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        // Busca los componentes del jugador
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             playerController = player.GetComponent<PlayerController>();
             playerCombat = player.GetComponent<PlayerCombat>();
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: No se encontró el jugador");
         }
 
         if (panelGameOver != null)
@@ -48,7 +51,10 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance == null) return;
         if (!GameManager.Instance.IsPlaying()) return;
+        if (playerController == null || playerCombat == null) return;
+
         ActualizarHUD();
     }
 

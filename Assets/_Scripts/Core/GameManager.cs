@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         CurrentState = GameState.Playing;
+        Time.timeScale = 1f;
         Debug.Log("Juego iniciado");
     }
 
@@ -61,4 +62,22 @@ public class GameManager : MonoBehaviour
     {
         return CurrentState == GameState.Playing;
     }
+
+    private void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneCargada;
+    }
+
+    private void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneCargada;
+    }
+
+    private void OnSceneCargada(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        // Solo reinicia el juego si cargamos la escena Game
+        if (scene.name == "Game")
+            StartGame();
+    }
+
 }

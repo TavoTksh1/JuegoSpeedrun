@@ -27,6 +27,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance == null) return;
         if (!GameManager.Instance.IsPlaying()) return;
 
         ActualizarDireccion();

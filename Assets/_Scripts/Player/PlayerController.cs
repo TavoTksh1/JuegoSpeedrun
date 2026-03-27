@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (!estaVivo) return;
+        if (GameManager.Instance == null) return;
         if (!GameManager.Instance.IsPlaying()) return;
 
         ManejarMovimiento();

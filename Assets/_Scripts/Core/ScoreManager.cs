@@ -38,15 +38,17 @@ public class ScoreManager : MonoBehaviour
     {
         if (!GameManager.Instance.IsPlaying()) return;
 
+        // La distancia es la posición X máxima alcanzada
         if (playerX > Distance)
         {
             Distance = playerX;
 
-            // Actualiza high score si se supera
             if (Distance > HighScore)
             {
                 HighScore = Distance;
                 PlayerPrefs.SetFloat(HighScoreKey, HighScore);
+                PlayerPrefs.Save(); // ← fuerza el guardado inmediato
+                Debug.Log($"Nuevo High Score: {HighScore:F0}m");
             }
         }
     }
@@ -62,5 +64,21 @@ public class ScoreManager : MonoBehaviour
         Distance = 0f;
         Coins = 0;
         Debug.Log("Puntuación reiniciada");
+    }
+
+    private void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneCargada;
+    }
+
+    private void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneCargada;
+    }
+
+    private void OnSceneCargada(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        if (scene.name == "Game")
+            ResetScore();
     }
 }

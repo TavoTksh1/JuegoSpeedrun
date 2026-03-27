@@ -1,39 +1,40 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
     [Header("Paneles")]
     [SerializeField] private GameObject panelPrincipal;
-    [SerializeField] private GameObject panelSlots;
     [SerializeField] private GameObject panelConfiguracion;
 
-    [Header("Slots de guardado")]
-    [SerializeField] private Button[] botonesSlot;      // 3 botones
-    [SerializeField] private TextMeshProUGUI[] textosSlot; // texto de cada slot
-    [SerializeField] private bool modoCargar = false;   // true = cargar, false = nueva partida
+    [Header("High Score")]
+    [SerializeField] private TextMeshProUGUI textoHighScore;
 
     private void Start()
     {
         MostrarPanelPrincipal();
+        MostrarHighScore();
     }
 
     // ── Menú principal ──────────────────────────────
 
-    public void OnNuevaPartida()
+    private void MostrarHighScore()
     {
-        modoCargar = false;
-        MostrarPanelSlots();
-        ActualizarTextoSlots();
+        if (textoHighScore == null)
+        {
+            Debug.LogError("textoHighScore es NULL");
+            return;
+        }
+        float highScore = PlayerPrefs.GetFloat("HighScore", 0f);
+        Debug.Log($"High Score leído: {highScore}");
+        textoHighScore.text = highScore > 0
+            ? $"Mejor distancia: {highScore:F0}m"
+            : "Sin record aun";
     }
-
-    public void OnCargarPartida()
+    public void OnJugar()
     {
-        modoCargar = true;
-        MostrarPanelSlots();
-        ActualizarTextoSlots();
+        SceneManager.LoadScene("Game");
     }
 
     public void OnConfiguracion()
@@ -48,51 +49,7 @@ public class MainMenuUI : MonoBehaviour
         Debug.Log("Saliendo del juego");
     }
 
-    // ── Slots ───────────────────────────────────────
-
-    public void OnSeleccionarSlot(int slot)
-    {
-        if (modoCargar)
-        {
-            SaveData data = SaveManager.Instance.CargarPartida(slot);
-            if (data.isEmpty)
-            {
-                Debug.Log("Slot vacío, no se puede cargar");
-                return;
-            }
-            // Aquí después pasaremos los datos al ScoreManager
-            Debug.Log($"Cargando slot {slot}");
-        }
-        else
-        {
-            SaveManager.Instance.BorrarSlot(slot);
-            Debug.Log($"Nueva partida en slot {slot}");
-        }
-
-        SceneManager.LoadScene("Game");
-    }
-
-    public void OnVolverAlMenu()
-    {
-        MostrarPanelPrincipal();
-    }
-
     // ── Configuración ───────────────────────────────
-
-    public void OnCambiarMusica(float valor)
-    {
-        SettingsManager.Instance.SetMusicVolume(valor);
-    }
-
-    public void OnCambiarSFX(float valor)
-    {
-        SettingsManager.Instance.SetSFXVolume(valor);
-    }
-
-    public void OnCambiarPantallaCompleta(bool valor)
-    {
-        SettingsManager.Instance.SetFullscreen(valor);
-    }
 
     public void OnVolverDesdeConfiguracion()
     {
@@ -100,42 +57,11 @@ public class MainMenuUI : MonoBehaviour
         panelPrincipal.SetActive(true);
     }
 
-    // ── Helpers ─────────────────────────────────────
+    // ── Helper ──────────────────────────────────────
 
     private void MostrarPanelPrincipal()
     {
         panelPrincipal.SetActive(true);
-        panelSlots.SetActive(false);
         panelConfiguracion.SetActive(false);
     }
-
-    private void MostrarPanelSlots()
-    {
-        panelPrincipal.SetActive(false);
-        panelSlots.SetActive(true);
-        panelConfiguracion.SetActive(false);
-    }
-
-    private void ActualizarTextoSlots()
-    {
-        SaveData[] slots = SaveManager.Instance.ObtenerTodosLosSlots();
-
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (slots[i].isEmpty)
-            {
-                textosSlot[i].text = "Slot vacío";
-            }
-            else
-            {
-                textosSlot[i].text = $"Distancia: {slots[i].distancia:F0}m\n" +
-                                     $"Monedas: {slots[i].monedas}\n" +
-                                     $"{slots[i].fecha}";
-            }
-        }
-    }
-    // Wrappers para los botones de slot (Unity no permite pasar int directo)
-    public void OnSeleccionarSlot0() { OnSeleccionarSlot(0); }
-    public void OnSeleccionarSlot1() { OnSeleccionarSlot(1); }
-    public void OnSeleccionarSlot2() { OnSeleccionarSlot(2); }
 }
