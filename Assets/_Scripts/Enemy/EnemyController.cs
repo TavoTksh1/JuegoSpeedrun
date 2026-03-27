@@ -29,6 +29,10 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
+        // Busca el SpriteRenderer automáticamente si no está asignado
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
         vidaActual = vidaMaxima;
         posicionInicial = transform.position;
         estado = EstadoEnemigo.Patrullando;
@@ -135,8 +139,12 @@ public class EnemyController : MonoBehaviour
 
         for (int i = 0; i < monedasAlMorir; i++)
         {
-            Vector2 posRandom = (Vector2)transform.position + Random.insideUnitCircle;
-            Instantiate(prefabMoneda, posRandom, Quaternion.identity);
+            // Solo spawnea hacia arriba y a los lados, nunca hacia abajo
+            Vector2 offset = new Vector2(
+                Random.Range(-1f, 1f),
+                Random.Range(0.2f, 1.5f)
+            );
+            Instantiate(prefabMoneda, (Vector2)transform.position + offset, Quaternion.identity);
         }
     }
 
