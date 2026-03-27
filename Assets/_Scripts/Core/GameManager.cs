@@ -37,9 +37,10 @@ public class GameManager : MonoBehaviour
         if (CurrentState == GameState.GameOver) return;
         CurrentState = GameState.GameOver;
         Debug.Log("Game Over");
-        // Aquí después llamaremos al UIManager
-    }
 
+        if (UIManager.Instance != null)
+            UIManager.Instance.MostrarGameOver();
+    }
     public void PauseGame()
     {
         if (CurrentState != GameState.Playing) return;
