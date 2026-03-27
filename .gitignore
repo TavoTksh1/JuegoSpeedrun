@@ -48,3 +48,9 @@ ehthumbs.db
 
 # Crashes
 crashlytics-build.properties
+
+# VSCode local config
+.vscode/
+
+# Escenas de plantilla URP (no las usamos)
+Assets/Settings/Scenes/
