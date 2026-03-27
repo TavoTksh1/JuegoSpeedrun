@@ -1,0 +1,150 @@
+using UnityEngine;
+
+public class EnemyController : MonoBehaviour
+{
+    public enum EstadoEnemigo { Patrullando, Manipulado, Muerto }
+
+    [Header("Movimiento")]
+    [SerializeField] private float velocidadPatrulla = 2f;
+    [SerializeField] private float velocidadManipulado = 4f;
+    [SerializeField] private float distanciaPatrulla = 3f;
+
+    [Header("Vida")]
+    [SerializeField] private int vidaMaxima = 3;
+    private int vidaActual;
+
+    [Header("Monedas")]
+    [SerializeField] private GameObject prefabMoneda;
+    [SerializeField] private int monedasAlMorir = 5;
+
+    [Header("Visual")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Color colorNormal = Color.red;
+    [SerializeField] private Color colorManipulado = Color.magenta;
+
+    private EstadoEnemigo estado;
+    private Vector2 posicionInicial;
+    private float direccion = 1f;
+    private Transform espinoCercano;
+
+    private void Start()
+    {
+        vidaActual = vidaMaxima;
+        posicionInicial = transform.position;
+        estado = EstadoEnemigo.Patrullando;
+
+        if (spriteRenderer != null)
+            spriteRenderer.color = colorNormal;
+    }
+
+    private void Update()
+    {
+        if (estado == EstadoEnemigo.Muerto) return;
+
+        if (estado == EstadoEnemigo.Patrullando)
+            Patrullar();
+        else if (estado == EstadoEnemigo.Manipulado)
+            MoverHaciaEspino();
+    }
+
+    // ── Patrulla ────────────────────────────────────
+
+    private void Patrullar()
+    {
+        transform.Translate(Vector2.right * direccion * velocidadPatrulla * Time.deltaTime);
+
+        float distancia = transform.position.x - posicionInicial.x;
+        if (distancia >= distanciaPatrulla || distancia <= -distanciaPatrulla)
+            direccion *= -1f;
+    }
+
+    // ── Manipulación ────────────────────────────────
+
+    public void SerManipulado()
+    {
+        estado = EstadoEnemigo.Manipulado;
+
+        if (spriteRenderer != null)
+            spriteRenderer.color = colorManipulado;
+
+        // Busca el espino más cercano en la escena
+        espinoCercano = BuscarEspinoCercano();
+        Debug.Log("Enemigo manipulado");
+    }
+
+    private void MoverHaciaEspino()
+    {
+        if (espinoCercano == null)
+        {
+            // Si no hay espino, sigue moviéndose en una dirección
+            transform.Translate(Vector2.right * velocidadManipulado * Time.deltaTime);
+            return;
+        }
+
+        Vector2 dir = (espinoCercano.position - transform.position).normalized;
+        transform.Translate(dir * velocidadManipulado * Time.deltaTime);
+    }
+
+    private Transform BuscarEspinoCercano()
+    {
+        GameObject[] espinos = GameObject.FindGameObjectsWithTag("Espino");
+        Transform masCercano = null;
+        float menorDistancia = Mathf.Infinity;
+
+        foreach (GameObject espino in espinos)
+        {
+            float dist = Vector2.Distance(transform.position, espino.transform.position);
+            if (dist < menorDistancia)
+            {
+                menorDistancia = dist;
+                masCercano = espino.transform;
+            }
+        }
+
+        return masCercano;
+    }
+
+    // ── Daño y muerte ───────────────────────────────
+
+    public void RecibirDano(int cantidad)
+    {
+        if (estado == EstadoEnemigo.Muerto) return;
+
+        vidaActual -= cantidad;
+        Debug.Log($"Enemigo recibió daño. Vida: {vidaActual}/{vidaMaxima}");
+
+        if (vidaActual <= 0)
+            Morir();
+    }
+
+    public void Morir()
+    {
+        if (estado == EstadoEnemigo.Muerto) return;
+
+        estado = EstadoEnemigo.Muerto;
+        SoltarMonedas();
+        Debug.Log("Enemigo muerto");
+        Destroy(gameObject, 0.1f);
+    }
+
+    // ── Monedas ─────────────────────────────────────
+
+    private void SoltarMonedas()
+    {
+        if (prefabMoneda == null) return;
+
+        for (int i = 0; i < monedasAlMorir; i++)
+        {
+            Vector2 posRandom = (Vector2)transform.position + Random.insideUnitCircle;
+            Instantiate(prefabMoneda, posRandom, Quaternion.identity);
+        }
+    }
+
+    // ── Colisiones ──────────────────────────────────
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Espino"))
+            Morir();
+    }
+}

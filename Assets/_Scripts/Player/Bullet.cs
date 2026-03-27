@@ -32,15 +32,22 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            // TODO: descomentar cuando EnemyController esté listo
-            // EnemyController enemigo = other.GetComponent<EnemyController>();
-            // if (enemigo == null) return;
-            // if (tipo == TipoBala.Normal) enemigo.RecibirDano(1);
-            // else if (tipo == TipoBala.Especial) enemigo.SerManipulado();
+            EnemyController enemigo = other.GetComponent<EnemyController>();
+            if (enemigo == null) return;
+
+            if (tipo == TipoBala.Normal)
+            {
+                enemigo.RecibirDano(1);
+            }
+            else if (tipo == TipoBala.Especial)
+            {
+                enemigo.SerManipulado();
+            }
 
             Destroy(gameObject);
         }
 
+        // Destruirse al tocar el suelo o paredes
         if (other.CompareTag("Suelo"))
         {
             Destroy(gameObject);
