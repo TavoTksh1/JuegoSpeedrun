@@ -1,0 +1,50 @@
+# ==========================================
+# .gitignore para Unity 2022.3.62f2
+# ==========================================
+
+# Carpetas generadas por Unity (no subir)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Archivos de Visual Studio
+.vs/
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+
+# Archivos de JetBrains (Rider)
+.idea/
+*.DotSettings.user
+
+# Archivos de sistema Windows
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# Archivos de macOS (por si acaso)
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Builds exportados
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Crashes
+crashlytics-build.properties
