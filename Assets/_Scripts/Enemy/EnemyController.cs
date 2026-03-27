@@ -55,6 +55,9 @@ public class EnemyController : MonoBehaviour
 
     private void Patrullar()
     {
+        if (HayObstaculoEnfrente())
+            direccion *= -1f;
+
         transform.Translate(Vector2.right * direccion * velocidadPatrulla * Time.deltaTime);
 
         float distancia = transform.position.x - posicionInicial.x;
@@ -76,6 +79,43 @@ public class EnemyController : MonoBehaviour
         Debug.Log("Enemigo manipulado");
     }
 
+    private bool HayEspinoEnfrente()
+    {
+        // Lanza un raycast corto en la dirección de movimiento
+        Vector2 origen = transform.position;
+        Vector2 dir = Vector2.right * direccion;
+        float distanciaDeteccion = 0.8f;
+
+        RaycastHit2D hit = Physics2D.Raycast(origen, dir, distanciaDeteccion);
+
+        // Dibuja el ray en la vista Scene para depurar
+        Debug.DrawRay(origen, dir * distanciaDeteccion, Color.red);
+
+        if (hit.collider != null && hit.collider.CompareTag("Espino"))
+            return true;
+
+        return false;
+    }
+
+    private bool HayObstaculoEnfrente()
+    {
+        Vector2 origen = transform.position;
+        Vector2 dir = Vector2.right * direccion;
+        float distanciaDeteccion = 0.8f;
+
+        // Detecta espinos Y obstáculos Y paredes
+        RaycastHit2D hit = Physics2D.Raycast(origen, dir, distanciaDeteccion);
+        Debug.DrawRay(origen, dir * distanciaDeteccion, Color.red);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.CompareTag("Espino")) return true;
+            if (hit.collider.CompareTag("Suelo")) return true;
+            if (hit.collider.CompareTag("Obstaculo")) return true;
+        }
+
+        return false;
+    }
     private void MoverHaciaEspino()
     {
         if (espinoCercano == null)

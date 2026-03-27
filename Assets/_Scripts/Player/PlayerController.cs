@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movimiento")]
     [SerializeField] private float velocidad = 5f;
-    [SerializeField] private float fuerzaSalto = 12f;
+    [SerializeField] private float fuerzaSalto = 120f;
 
     [Header("Detección de suelo")]
     [SerializeField] private Transform puntoSuelo;
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.sharedMaterial = new PhysicsMaterial2D { friction = 0f, bounciness = 0f };
     }
 
     private void Start()
