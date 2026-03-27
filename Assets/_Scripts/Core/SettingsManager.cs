@@ -54,8 +54,8 @@ public class SettingsManager : MonoBehaviour
 
     private void CargarConfiguracion()
     {
-        MusicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1f);
-        SFXVolume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
+        MusicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1.0f);
+        SFXVolume = PlayerPrefs.GetFloat(SFX_KEY, 1.0f);
         IsFullscreen = PlayerPrefs.GetInt(FULLSCREEN_KEY, 1) == 1;
 
         Screen.fullScreen = IsFullscreen;
