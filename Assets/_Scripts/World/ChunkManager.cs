@@ -73,24 +73,25 @@ public class ChunkManager : MonoBehaviour
 
         float anchoTotal = seccionesPorChunk * anchoSeccion;
 
-        // Suelo largo hacia atrás y adelante del jugador
-        GameObject suelo = Instantiate(
-            prefabSuelo,
-            new Vector2(anchoTotal / 2f - anchoSeccion, -1f),
-            Quaternion.identity,
-            chunk.transform
-        );
-        suelo.transform.localScale = new Vector3(anchoTotal + anchoSeccion * 2f, 1f, 1f);
+        // Suelo inicial con tiles individuales
+        for (float tx = -anchoSeccion; tx < anchoTotal + anchoSeccion; tx += 1f)
+        {
+            Instantiate(
+                prefabSuelo,
+                new Vector2(tx, -1f),
+                Quaternion.identity,
+                chunk.transform
+            );
+        }
 
-        // Pared izquierda para que el jugador no vaya atrás
-        GameObject pared = Instantiate(
-            prefabSuelo,
-            new Vector2(-anchoSeccion, 2f),
-            Quaternion.identity,
-            chunk.transform
-        );
-        pared.transform.localScale = new Vector3(1f, 10f, 1f);
+        // Pared izquierda invisible — solo collider
+        GameObject pared = new GameObject("ParedInicial");
+        pared.transform.parent = chunk.transform;
+        pared.transform.position = new Vector2(-anchoSeccion, 2f);
+        pared.layer = LayerMask.NameToLayer("Suelo");
         pared.tag = "Suelo";
+        BoxCollider2D colPared = pared.AddComponent<BoxCollider2D>();
+        colPared.size = new Vector2(1f, 10f);
 
         // Monedas guía hacia la derecha
         for (int i = 1; i <= 3; i++)
@@ -133,7 +134,7 @@ public class ChunkManager : MonoBehaviour
             vacioAnterior = false;
 
             // Sección de suelo
-            GenerarSeccionSuelo(chunk, x);
+            GenerarSeccionSuelo(chunk, x, anchoSeccion);
 
             // Elementos encima
             espinoAnterior = GenerarElemento(chunk, x, espinoAnterior);
@@ -144,18 +145,20 @@ public class ChunkManager : MonoBehaviour
     }
 
     // ── Suelo y huecos ──────────────────────────────
-
-    private void GenerarSeccionSuelo(GameObject chunk, float x)
+    private void GenerarSeccionSuelo(GameObject chunk, float x, float ancho)
     {
         if (prefabSuelo == null) return;
 
-        GameObject suelo = Instantiate(
-            prefabSuelo,
-            new Vector2(x, -1f),
-            Quaternion.identity,
-            chunk.transform
-        );
-        suelo.transform.localScale = new Vector3(anchoSeccion, 1f, 1f);
+        // Genera tiles individuales de tamaño 1x1
+        for (float tx = x - ancho / 2f; tx < x + ancho / 2f; tx += 1f)
+        {
+            Instantiate(
+                prefabSuelo,
+                new Vector2(tx, -1f),
+                Quaternion.identity,
+                chunk.transform
+            );
+        }
     }
 
     private void GenerarHueco(GameObject chunk, float x)

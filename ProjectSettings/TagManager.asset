@@ -8,6 +8,7 @@ TagManager:
   - Suelo
   - Espino
   - Coin
+  - Obstaculo
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - UI
   - Moneda
   - Enemies
-  - 
-  - 
+  - Obstaculo
+  - Bala
   - 
   - 
   - 

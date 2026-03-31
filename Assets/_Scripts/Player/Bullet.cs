@@ -6,12 +6,18 @@ public class Bullet : MonoBehaviour
 
     [Header("Configuración")]
     [SerializeField] private float velocidad = 15f;
-    [SerializeField] private float tiempoVida = 1.5f; // ← límite de tiempo
-    [SerializeField] private float distanciaMaxima = 20f; // ← límite de distancia
+    [SerializeField] private float tiempoVida = 1.5f;
+    [SerializeField] private float distanciaMaxima = 20f;
 
     private TipoBala tipo;
     private float direccion = 1f;
     private Vector2 posicionInicial;
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Start()
     {
@@ -21,9 +27,8 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Translate(Vector2.right * velocidad * direccion * Time.deltaTime);
+        transform.Translate(Vector2.right * velocidad * direccion * Time.fixedDeltaTime);
 
-        // Se destruye si supera la distancia máxima
         if (Vector2.Distance(posicionInicial, transform.position) >= distanciaMaxima)
             Destroy(gameObject);
     }
@@ -32,29 +37,30 @@ public class Bullet : MonoBehaviour
     {
         tipo = tipoBala;
         direccion = dir;
+        posicionInicial = transform.position;
+
+        // Voltea el sprite según la dirección
+        if (spriteRenderer != null)
+            spriteRenderer.flipX = dir < 0;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Colisión física con: {other.gameObject.name} | Tag: {other.tag}");
-        Destroy(gameObject);
-
         if (other.CompareTag("Enemy"))
         {
             EnemyController enemigo = other.GetComponent<EnemyController>();
-            if (enemigo == null) return;
-
-            if (tipo == TipoBala.Normal)
-                enemigo.RecibirDano(1);
-            else if (tipo == TipoBala.Especial)
-                enemigo.SerManipulado();
-
+            if (enemigo != null)
+            {
+                if (tipo == TipoBala.Normal)
+                    enemigo.RecibirDano(1);
+                else if (tipo == TipoBala.Especial)
+                    enemigo.SerManipulado();
+            }
             Destroy(gameObject);
+            return;
         }
 
-        if (other.CompareTag("Suelo")) Destroy(gameObject);
-        if (other.CompareTag("Obstaculo")) Destroy(gameObject);
+        if (other.CompareTag("Suelo") || other.CompareTag("Obstaculo"))
+            Destroy(gameObject);
     }
-
-   
 }
