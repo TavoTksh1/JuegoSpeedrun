@@ -40,6 +40,17 @@ public class PlayerCombat : MonoBehaviour
         direccion = transform.localScale.x > 0 ? 1f : -1f;
     }
 
+    public void AgregarBalasNormales(int cantidad)
+    {
+        balasNormales = Mathf.Min(balasNormales + cantidad, maxBalasNormales);
+        Debug.Log($"Balas normales: {balasNormales}");
+    }
+
+    public void AgregarBalasEspeciales(int cantidad)
+    {
+        balasEspeciales = Mathf.Min(balasEspeciales + cantidad, maxBalasEspeciales);
+        Debug.Log($"Balas especiales: {balasEspeciales}");
+    }
     private void ManejarDisparo()
     {
         // Bala normal — clic izquierdo

@@ -27,6 +27,9 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float probObstaculo = 0.15f;
     [SerializeField] [Range(0, 1)] private float probVacio = 0.1f;
 
+    [Header("Prefabs del chunk")]
+    [SerializeField] private GameObject prefabBalaNormalPickup;
+    [SerializeField] private GameObject prefabBalaEspecialPickup;
     private Transform jugador;
     private List<GameObject> chunksActivos = new List<GameObject>();
     private float xUltimoChunk = 0f;
@@ -217,6 +220,12 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
+        // Bala suelta aleatoria
+        if (Random.value < 0.1f && prefabBalaNormalPickup != null)
+            Instantiate(prefabBalaNormalPickup, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
+        else if (Random.value < 0.05f && prefabBalaEspecialPickup != null)
+            Instantiate(prefabBalaEspecialPickup, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
+
         // Moneda por defecto
         if (prefabMoneda != null)
             Instantiate(prefabMoneda, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
@@ -224,6 +233,8 @@ public class ChunkManager : MonoBehaviour
         TentarPlataforma(chunk, x, true);
         return false;
     }
+
+
 
     private void GenerarObstaculo(GameObject chunk, float x)
     {

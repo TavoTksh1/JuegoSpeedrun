@@ -331,5 +331,29 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Espino"))
             Morir();
+
+        if (other.CompareTag("Player"))
+        {
+            // Verifica si el jugador viene desde arriba
+            float diferenciaY = other.transform.position.y - transform.position.y;
+
+            if (diferenciaY > 0.5f)
+            {
+                // Jugador cayó encima — enemigo muere
+                Morir();
+
+                // Rebota al jugador hacia arriba
+                Rigidbody2D rbJugador = other.GetComponent<Rigidbody2D>();
+                if (rbJugador != null)
+                    rbJugador.velocity = new Vector2(rbJugador.velocity.x, 8f);
+            }
+            else
+            {
+                // Jugador tocó por el lado — pierde vida
+                PlayerController jugador = other.GetComponent<PlayerController>();
+                if (jugador != null)
+                    jugador.RecibirDano(1);
+            }
+        }
     }
 }

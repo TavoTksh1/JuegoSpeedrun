@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float radioSuelo = 0.2f;
     [SerializeField] private LayerMask capaSuelo;
 
+    [Header("Salto")]
+    [SerializeField] private int saltoMaximo = 2;
+    private int saltosRestantes;
+
     [Header("Vida")]
     [SerializeField] private int vidaMaxima = 3;
     private int vidaActual;
@@ -61,9 +65,13 @@ public class PlayerController : MonoBehaviour
 
     private void ManejarSalto()
     {
-        if (Input.GetButtonDown("Jump") && estaEnSuelo)
+        if (estaEnSuelo)
+            saltosRestantes = saltoMaximo;
+
+        if (Input.GetButtonDown("Jump") && saltosRestantes > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
+            saltosRestantes--;
         }
     }
 
