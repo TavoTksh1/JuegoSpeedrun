@@ -12,10 +12,12 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private GameObject prefabMoneda;
     [SerializeField] private GameObject prefabAmmoStation;
     [SerializeField] private GameObject prefabObstaculo;
+    [SerializeField] private GameObject prefabBalaNormalPickup;
+    [SerializeField] private GameObject prefabBalaEspecialPickup;
 
     [Header("Configuración de chunks")]
-    [SerializeField] private float anchoSeccion = 5f;    // ancho de cada sección de suelo
-    [SerializeField] private float anchoHueco = 3f;      // ancho exacto del hueco
+    [SerializeField] private float anchoSeccion = 5f;
+    [SerializeField] private float anchoHueco = 3f;
     [SerializeField] private int seccionesPorChunk = 4;
     [SerializeField] private int chunksVisibles = 3;
     [SerializeField] private int chunksGenerados = 0;
@@ -26,10 +28,9 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float probAmmoStation = 0.15f;
     [SerializeField] [Range(0, 1)] private float probObstaculo = 0.15f;
     [SerializeField] [Range(0, 1)] private float probVacio = 0.1f;
+    [SerializeField] [Range(0, 1)] private float probBalaNormal = 0.1f;
+    [SerializeField] [Range(0, 1)] private float probBalaEspecial = 0.05f;
 
-    [Header("Prefabs del chunk")]
-    [SerializeField] private GameObject prefabBalaNormalPickup;
-    [SerializeField] private GameObject prefabBalaEspecialPickup;
     private Transform jugador;
     private List<GameObject> chunksActivos = new List<GameObject>();
     private float xUltimoChunk = 0f;
@@ -47,18 +48,20 @@ public class ChunkManager : MonoBehaviour
     private void Start()
     {
         jugador = GameObject.FindGameObjectWithTag("Player").transform;
-
-        // Chunk inicial seguro bajo el jugador
         GenerarChunkInicial();
-
-        // Chunks normales
         for (int i = 0; i < chunksVisibles; i++)
             GenerarChunk(false);
     }
 
     private void Update()
     {
-        if (jugador == null) return;
+        // Busca el jugador si se perdió la referencia
+        if (jugador == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) jugador = p.transform;
+            return;
+        }
 
         float anchoTotal = seccionesPorChunk * anchoSeccion;
         if (jugador.position.x + (anchoTotal * (chunksVisibles - 1)) > xUltimoChunk)
@@ -76,7 +79,6 @@ public class ChunkManager : MonoBehaviour
 
         float anchoTotal = seccionesPorChunk * anchoSeccion;
 
-        // Suelo inicial con tiles individuales
         for (float tx = -anchoSeccion; tx < anchoTotal + anchoSeccion; tx += 1f)
         {
             Instantiate(
@@ -87,7 +89,6 @@ public class ChunkManager : MonoBehaviour
             );
         }
 
-        // Pared izquierda invisible — solo collider
         GameObject pared = new GameObject("ParedInicial");
         pared.transform.parent = chunk.transform;
         pared.transform.position = new Vector2(-anchoSeccion, 2f);
@@ -96,7 +97,6 @@ public class ChunkManager : MonoBehaviour
         BoxCollider2D colPared = pared.AddComponent<BoxCollider2D>();
         colPared.size = new Vector2(1f, 10f);
 
-        // Monedas guía hacia la derecha
         for (int i = 1; i <= 3; i++)
             Instantiate(prefabMoneda, new Vector2(anchoSeccion * i, 1f), Quaternion.identity, chunk.transform);
 
@@ -120,26 +120,19 @@ public class ChunkManager : MonoBehaviour
             float x = xInicio + (anchoSeccion * i) + anchoSeccion / 2f;
             float roll = Random.value;
 
-            // Hueco — nunca dos seguidos, nunca el primero del chunk
             bool esVacio = !forzarSeguro && roll < probVacio && !vacioAnterior && i > 0;
 
             if (esVacio)
             {
-                // Genera hueco de ancho exacto
                 GenerarHueco(chunk, x);
                 vacioAnterior = true;
                 espinoAnterior = false;
-                // Avanza el xUltimoChunk por el hueco
                 xInicio += anchoHueco - anchoSeccion;
                 continue;
             }
 
             vacioAnterior = false;
-
-            // Sección de suelo
             GenerarSeccionSuelo(chunk, x, anchoSeccion);
-
-            // Elementos encima
             espinoAnterior = GenerarElemento(chunk, x, espinoAnterior);
         }
 
@@ -148,11 +141,11 @@ public class ChunkManager : MonoBehaviour
     }
 
     // ── Suelo y huecos ──────────────────────────────
+
     private void GenerarSeccionSuelo(GameObject chunk, float x, float ancho)
     {
         if (prefabSuelo == null) return;
 
-        // Genera tiles individuales de tamaño 1x1
         for (float tx = x - ancho / 2f; tx < x + ancho / 2f; tx += 1f)
         {
             Instantiate(
@@ -166,8 +159,6 @@ public class ChunkManager : MonoBehaviour
 
     private void GenerarHueco(GameObject chunk, float x)
     {
-        // El hueco no genera suelo — solo marca visual opcional
-        // El DeathZone detecta si el jugador cae aquí
         Debug.Log($"Hueco generado en X: {x}");
     }
 
@@ -199,7 +190,7 @@ public class ChunkManager : MonoBehaviour
         {
             if (prefabEspino != null)
                 Instantiate(prefabEspino, new Vector2(x, 0f), Quaternion.identity, chunk.transform);
-            return true; // no genera plataforma arriba
+            return true;
         }
 
         // Enemigo
@@ -220,11 +211,21 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // Bala suelta aleatoria
-        if (Random.value < 0.1f && prefabBalaNormalPickup != null)
+        // Bala normal suelta
+        if (Random.value < probBalaNormal && prefabBalaNormalPickup != null)
+        {
             Instantiate(prefabBalaNormalPickup, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
-        else if (Random.value < 0.05f && prefabBalaEspecialPickup != null)
+            TentarPlataforma(chunk, x, false);
+            return false;
+        }
+
+        // Bala especial suelta
+        if (Random.value < probBalaEspecial && prefabBalaEspecialPickup != null)
+        {
             Instantiate(prefabBalaEspecialPickup, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
+            TentarPlataforma(chunk, x, false);
+            return false;
+        }
 
         // Moneda por defecto
         if (prefabMoneda != null)
@@ -233,8 +234,6 @@ public class ChunkManager : MonoBehaviour
         TentarPlataforma(chunk, x, true);
         return false;
     }
-
-
 
     private void GenerarObstaculo(GameObject chunk, float x)
     {
@@ -248,7 +247,6 @@ public class ChunkManager : MonoBehaviour
         );
         obs.transform.localScale = new Vector3(0.8f, 1.5f, 1f);
 
-        // Puede salir enemigo encima
         if (Random.value > 0.5f && EnemyManager.Instance != null)
             EnemyManager.Instance.SpawnEnemigo(new Vector2(x, 1.8f));
     }
@@ -268,7 +266,6 @@ public class ChunkManager : MonoBehaviour
             plataforma.layer = LayerMask.NameToLayer("Suelo");
             plataforma.tag = "Suelo";
 
-            // Espino encima solo si no hay espino abajo
             if (puedeEspino && Random.value < 0.4f && prefabEspino != null)
             {
                 Instantiate(
@@ -287,7 +284,7 @@ public class ChunkManager : MonoBehaviour
     {
         chunksActivos.RemoveAll(c => c == null);
 
-        if (chunksActivos.Count > chunksVisibles + 2)
+        if (chunksActivos.Count > chunksVisibles + 4)
         {
             GameObject chunkViejo = chunksActivos[0];
             chunksActivos.RemoveAt(0);
