@@ -9,6 +9,7 @@ public class Coin : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             ScoreManager.Instance.AddCoins(valor);
+            AudioManager.instance.PlayCoin();
             Destroy(gameObject);
         }
     }
@@ -19,6 +20,7 @@ public class Coin : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             ScoreManager.Instance.AddCoins(valor);
+            AudioManager.instance.PlayCoin();
             Destroy(gameObject);
         }
     }

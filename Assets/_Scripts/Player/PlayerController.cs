@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
             saltosRestantes--;
+            AudioManager.instance.PlayJump();
         }
     }
 
