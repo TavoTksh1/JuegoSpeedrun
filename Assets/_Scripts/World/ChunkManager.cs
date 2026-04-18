@@ -1,12 +1,17 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
 public class ChunkManager : MonoBehaviour
 {
     public static ChunkManager Instance { get; private set; }
 
+    [Header("Tilemap")]
+    [SerializeField] private Tilemap sueloTilemap;
+    [SerializeField] private TileBase sueloTile;
+    [SerializeField] private int profundidadRelleno = 5;
+
     [Header("Prefabs del chunk")]
-    [SerializeField] private GameObject prefabSuelo;
     [SerializeField] private GameObject prefabPlataforma;
     [SerializeField] private GameObject prefabEspino;
     [SerializeField] private GameObject prefabMoneda;
@@ -35,6 +40,9 @@ public class ChunkManager : MonoBehaviour
     private List<GameObject> chunksActivos = new List<GameObject>();
     private float xUltimoChunk = 0f;
 
+    // Rastrea qué columnas X tienen suelo para poder borrarlas después
+    private List<int> columnasConSuelo = new List<int>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,7 +63,6 @@ public class ChunkManager : MonoBehaviour
 
     private void Update()
     {
-        // Busca el jugador si se perdió la referencia
         if (jugador == null)
         {
             GameObject p = GameObject.FindGameObjectWithTag("Player");
@@ -78,17 +85,12 @@ public class ChunkManager : MonoBehaviour
         chunksActivos.Add(chunk);
 
         float anchoTotal = seccionesPorChunk * anchoSeccion;
+        int xInicio = Mathf.RoundToInt(-anchoSeccion);
+        int xFin = Mathf.RoundToInt(anchoTotal + anchoSeccion);
 
-        for (float tx = -anchoSeccion; tx < anchoTotal + anchoSeccion; tx += 1f)
-        {
-            Instantiate(
-                prefabSuelo,
-                new Vector2(tx, -1f),
-                Quaternion.identity,
-                chunk.transform
-            );
-        }
+        PintarSuelo(xInicio, xFin);
 
+        // Pared izquierda invisible
         GameObject pared = new GameObject("ParedInicial");
         pared.transform.parent = chunk.transform;
         pared.transform.position = new Vector2(-anchoSeccion, 2f);
@@ -108,7 +110,7 @@ public class ChunkManager : MonoBehaviour
 
     private void GenerarChunk(bool forzarSeguro)
     {
-        float xInicio = xUltimoChunk;
+        float xInicioFloat = xUltimoChunk;
         GameObject chunk = new GameObject($"Chunk_{chunksGenerados}");
         chunksActivos.Add(chunk);
 
@@ -117,49 +119,67 @@ public class ChunkManager : MonoBehaviour
 
         for (int i = 0; i < seccionesPorChunk; i++)
         {
-            float x = xInicio + (anchoSeccion * i) + anchoSeccion / 2f;
+            float x = xInicioFloat + (anchoSeccion * i) + anchoSeccion / 2f;
             float roll = Random.value;
 
             bool esVacio = !forzarSeguro && roll < probVacio && !vacioAnterior && i > 0;
 
             if (esVacio)
             {
-                GenerarHueco(chunk, x);
                 vacioAnterior = true;
                 espinoAnterior = false;
-                xInicio += anchoHueco - anchoSeccion;
+                xInicioFloat += anchoHueco - anchoSeccion;
                 continue;
             }
 
             vacioAnterior = false;
-            GenerarSeccionSuelo(chunk, x, anchoSeccion);
+
+            // Pinta suelo con tilemap
+            int xTileInicio = Mathf.RoundToInt(x - anchoSeccion / 2f);
+            int xTileFin = Mathf.RoundToInt(x + anchoSeccion / 2f);
+            PintarSuelo(xTileInicio, xTileFin);
+
             espinoAnterior = GenerarElemento(chunk, x, espinoAnterior);
         }
 
-        xUltimoChunk = xInicio + (seccionesPorChunk * anchoSeccion);
+        xUltimoChunk = xInicioFloat + (seccionesPorChunk * anchoSeccion);
         chunksGenerados++;
     }
 
-    // ── Suelo y huecos ──────────────────────────────
+    // ── Tilemap ─────────────────────────────────────
 
-    private void GenerarSeccionSuelo(GameObject chunk, float x, float ancho)
+    private void PintarSuelo(int xInicio, int xFin)
     {
-        if (prefabSuelo == null) return;
+        if (sueloTilemap == null || sueloTile == null) return;
 
-        for (float tx = x - ancho / 2f; tx < x + ancho / 2f; tx += 1f)
+        int yBase = -1;
+
+        for (int tx = xInicio; tx < xFin; tx++)
         {
-            Instantiate(
-                prefabSuelo,
-                new Vector2(tx, -1f),
-                Quaternion.identity,
-                chunk.transform
-            );
+            // Fila principal
+            sueloTilemap.SetTile(new Vector3Int(tx, yBase, 0), sueloTile);
+
+            // Relleno hacia abajo
+            for (int ty = yBase - 1; ty >= yBase - profundidadRelleno; ty--)
+                sueloTilemap.SetTile(new Vector3Int(tx, ty, 0), sueloTile);
+
+            columnasConSuelo.Add(tx);
         }
     }
 
-    private void GenerarHueco(GameObject chunk, float x)
+    private void BorrarSuelo(int xInicio, int xFin)
     {
-        Debug.Log($"Hueco generado en X: {x}");
+        if (sueloTilemap == null) return;
+
+        int yBase = -1;
+
+        for (int tx = xInicio; tx < xFin; tx++)
+        {
+            sueloTilemap.SetTile(new Vector3Int(tx, yBase, 0), null);
+
+            for (int ty = yBase - 1; ty >= yBase - profundidadRelleno; ty--)
+                sueloTilemap.SetTile(new Vector3Int(tx, ty, 0), null);
+        }
     }
 
     // ── Elementos ───────────────────────────────────
@@ -168,7 +188,6 @@ public class ChunkManager : MonoBehaviour
     {
         float roll = Random.value;
 
-        // Zona segura después de espino
         if (espinoAnterior)
         {
             if (prefabMoneda != null)
@@ -177,7 +196,6 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // Obstáculo
         if (roll < probObstaculo)
         {
             GenerarObstaculo(chunk, x);
@@ -185,7 +203,6 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // Espino en suelo
         if (roll < probObstaculo + probEspino)
         {
             if (prefabEspino != null)
@@ -193,7 +210,6 @@ public class ChunkManager : MonoBehaviour
             return true;
         }
 
-        // Enemigo
         if (roll < probObstaculo + probEspino + probEnemigo)
         {
             if (EnemyManager.Instance != null)
@@ -202,7 +218,6 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // AmmoStation
         if (roll < probObstaculo + probEspino + probEnemigo + probAmmoStation)
         {
             if (prefabAmmoStation != null)
@@ -211,7 +226,6 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // Bala normal suelta
         if (Random.value < probBalaNormal && prefabBalaNormalPickup != null)
         {
             Instantiate(prefabBalaNormalPickup, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
@@ -219,7 +233,6 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // Bala especial suelta
         if (Random.value < probBalaEspecial && prefabBalaEspecialPickup != null)
         {
             Instantiate(prefabBalaEspecialPickup, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
@@ -227,7 +240,6 @@ public class ChunkManager : MonoBehaviour
             return false;
         }
 
-        // Moneda por defecto
         if (prefabMoneda != null)
             Instantiate(prefabMoneda, new Vector2(x, 1f), Quaternion.identity, chunk.transform);
 
@@ -287,6 +299,16 @@ public class ChunkManager : MonoBehaviour
         if (chunksActivos.Count > chunksVisibles + 4)
         {
             GameObject chunkViejo = chunksActivos[0];
+
+            // Borra los tiles del chunk viejo
+            if (chunkViejo != null)
+            {
+                float xChunk = chunkViejo.transform.position.x;
+                int xInicio = Mathf.RoundToInt(xChunk);
+                int xFin = xInicio + Mathf.RoundToInt(seccionesPorChunk * anchoSeccion);
+                BorrarSuelo(xInicio, xFin);
+            }
+
             chunksActivos.RemoveAt(0);
             Destroy(chunkViejo);
         }

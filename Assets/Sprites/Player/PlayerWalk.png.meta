@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ec400e38a3022014a8e91217739da605
+guid: b969a669398eef544b399c7ac9a68411
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -44,11 +44,11 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 0
+  spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 300
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,211 +97,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Obstaculo_0
+      name: PlayerWalk_0
       rect:
         serializedVersion: 2
-        x: 86
-        y: 551
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 94
+        y: 556
+        width: 447
+        height: 444
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d26c6a4e0e5a124db7066bb03be89ba
-      internalID: -1013383054
+      spriteID: 05aac64a55a46e343ac80a278dabab00
+      internalID: 987363554
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Obstaculo_1
+      name: PlayerWalk_1
       rect:
         serializedVersion: 2
-        x: 386
-        y: 551
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 552
+        y: 552
+        width: 467
+        height: 446
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 35d6d6722ca33854297fdea07afc8fbb
-      internalID: -1057910624
+      spriteID: 5e027af6ae8358a489bb677ca4972fd4
+      internalID: -1347495519
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Obstaculo_2
+      name: PlayerWalk_2
       rect:
         serializedVersion: 2
-        x: 686
-        y: 551
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1035
+        y: 552
+        width: 461
+        height: 448
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1caf06c89f1f52942963acac1285173c
-      internalID: 652534559
+      spriteID: 99aa207d4f36b3e4c9fcd5f23682df80
+      internalID: -553877106
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Obstaculo_3
+      name: PlayerWalk_3
       rect:
         serializedVersion: 2
-        x: 86
-        y: 252
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 46
+        y: 63
+        width: 465
+        height: 411
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94c269504414302409704fefd79c946e
-      internalID: -1054408396
+      spriteID: a6ca91bf9dfc83645a27b5b74f527f6f
+      internalID: -716034970
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Obstaculo_4
+      name: PlayerWalk_4
       rect:
         serializedVersion: 2
-        x: 386
-        y: 251
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 558
+        y: 57
+        width: 446
+        height: 418
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 11522aa693fa6cc48adaaf6161e39171
-      internalID: -161393766
+      spriteID: 8976f2f4ab61be741a3d247f38eef234
+      internalID: 1974153084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Obstaculo_5
+      name: PlayerWalk_5
       rect:
         serializedVersion: 2
-        x: 686
-        y: 251
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1033
+        y: 62
+        width: 472
+        height: 411
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c5953b320e1c3147afce8a5fa29d606
-      internalID: -388963205
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Obstaculo_6
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 366
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9886686f3fb1cc54e9a6563873146cb8
-      internalID: 2125626663
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Obstaculo_7
-      rect:
-        serializedVersion: 2
-        x: 387
-        y: 364
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e6ab9de94976158449c87b6e08f3a159
-      internalID: 851832246
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Obstaculo_8
-      rect:
-        serializedVersion: 2
-        x: 687
-        y: 363
-        width: 300
-        height: 300
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 245ffec70cb00de4ba5def04f6a805f9
-      internalID: 1839707338
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Obstaculo_9
-      rect:
-        serializedVersion: 2
-        x: 84
-        y: 249
-        width: 901
-        height: 602
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6bf966af51676724da05cd739c52710d
-      internalID: 317171155
+      spriteID: d773c88d7c2f1804898d0b81140d4674
+      internalID: -1891804473
       vertices: []
       indices: 
       edges: []
@@ -317,16 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Obstaculo_0: -1013383054
-      Obstaculo_1: -1057910624
-      Obstaculo_2: 652534559
-      Obstaculo_3: -1054408396
-      Obstaculo_4: -161393766
-      Obstaculo_5: -388963205
-      Obstaculo_6: 2125626663
-      Obstaculo_7: 851832246
-      Obstaculo_8: 1839707338
-      Obstaculo_9: 317171155
+      PlayerWalk_0: 987363554
+      PlayerWalk_1: -1347495519
+      PlayerWalk_2: -553877106
+      PlayerWalk_3: -716034970
+      PlayerWalk_4: 1974153084
+      PlayerWalk_5: -1891804473
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b969a669398eef544b399c7ac9a68411
+guid: 21966b3c346edda4fa0916495f09c604
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,127 +97,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlayerWalk_0
+      name: PlayerJump_0
       rect:
         serializedVersion: 2
-        x: 93
-        y: 556
-        width: 447
-        height: 444
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 218
+        y: 562
+        width: 495
+        height: 284
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05aac64a55a46e343ac80a278dabab00
-      internalID: 987363554
+      spriteID: 4586437292f5a204c860c6964c43efd6
+      internalID: -760451451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerWalk_1
+      name: PlayerJump_1
       rect:
         serializedVersion: 2
-        x: 552
-        y: 552
-        width: 467
-        height: 446
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 223
+        y: 102
+        width: 470
+        height: 345
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5e027af6ae8358a489bb677ca4972fd4
-      internalID: -1347495519
+      spriteID: 22d42c3e605e592499dde85f8c90de20
+      internalID: -780351655
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerWalk_2
+      name: PlayerJump_2
       rect:
         serializedVersion: 2
-        x: 1035
-        y: 552
-        width: 461
-        height: 448
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 900
+        y: 627
+        width: 443
+        height: 363
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 99aa207d4f36b3e4c9fcd5f23682df80
-      internalID: -553877106
+      spriteID: d8310652825806a48a60100caf5696d5
+      internalID: -1817943013
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerWalk_3
+      name: PlayerJump_3
       rect:
         serializedVersion: 2
-        x: 46
-        y: 63
-        width: 465
-        height: 411
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 981
+        y: 75
+        width: 435
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6ca91bf9dfc83645a27b5b74f527f6f
-      internalID: -716034970
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerWalk_4
-      rect:
-        serializedVersion: 2
-        x: 558
-        y: 57
-        width: 446
-        height: 418
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8976f2f4ab61be741a3d247f38eef234
-      internalID: 1974153084
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerWalk_5
-      rect:
-        serializedVersion: 2
-        x: 1033
-        y: 62
-        width: 472
-        height: 411
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d773c88d7c2f1804898d0b81140d4674
-      internalID: -1891804473
+      spriteID: c676e9dcae5f617468ec0e056e015eb6
+      internalID: -1053765922
       vertices: []
       indices: 
       edges: []
@@ -233,12 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      PlayerWalk_0: 987363554
-      PlayerWalk_1: -1347495519
-      PlayerWalk_2: -553877106
-      PlayerWalk_3: -716034970
-      PlayerWalk_4: 1974153084
-      PlayerWalk_5: -1891804473
+      PlayerJump_0: -760451451
+      PlayerJump_1: -780351655
+      PlayerJump_2: -1817943013
+      PlayerJump_3: -1053765922
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

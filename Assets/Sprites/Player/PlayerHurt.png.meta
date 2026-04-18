@@ -100,13 +100,13 @@ TextureImporter:
       name: PlayerHurt_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 513
-        width: 763
-        height: 511
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+        x: 199
+        y: 526
+        width: 551
+        height: 498
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 2, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -121,12 +121,12 @@ TextureImporter:
       name: PlayerHurt_1
       rect:
         serializedVersion: 2
-        x: 763
-        y: 513
-        width: 763
-        height: 511
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 807
+        y: 527
+        width: 603
+        height: 497
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -142,12 +142,12 @@ TextureImporter:
       name: PlayerHurt_2
       rect:
         serializedVersion: 2
-        x: 2
+        x: 197
         y: 65
-        width: 763
-        height: 448
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 521
+        height: 411
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -163,12 +163,12 @@ TextureImporter:
       name: PlayerHurt_3
       rect:
         serializedVersion: 2
-        x: 763
+        x: 902
         y: 64
-        width: 763
+        width: 514
         height: 449
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -183,14 +183,16 @@ public class EnemyController : MonoBehaviour
         Vector2 dir = Vector2.right * direccion;
         float distanciaDeteccion = 0.8f;
 
+        // Ignora el propio collider del enemigo
         RaycastHit2D hit = Physics2D.Raycast(origen, dir, distanciaDeteccion);
         Debug.DrawRay(origen, dir * distanciaDeteccion, Color.red);
 
         if (hit.collider != null)
         {
+            // Ignora el Tilemap del suelo — solo detecta obstáculos reales
             if (hit.collider.CompareTag("Espino")) return true;
-            if (hit.collider.CompareTag("Suelo")) return true;
             if (hit.collider.CompareTag("Obstaculo")) return true;
+            // Ya no detecta "Suelo" para evitar bloqueo con el Tilemap
         }
 
         return false;
