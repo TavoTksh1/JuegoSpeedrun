@@ -55,8 +55,7 @@ crashlytics-build.properties
 # Escenas de plantilla URP (no las usamos)
 Assets/Settings/Scenes/
 
-# Carpetas específicas de Assets
 Assets/Leohpaz/
-Assets/Multiple\ Solutions/
-Assets/Outriders\ oath/
-Assets\NPC\ or\ Player/
+Assets/Multiple Solutions/
+Assets/Outriders oath/
+Assets/NPC or Player/
