@@ -110,6 +110,11 @@ MonoBehaviour:
   spriteRenderer: {fileID: 625446772276010384}
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
   colorManipulado: {r: 1, g: 0, b: 1, a: 1}
+  capaDeteccion:
+    serializedVersion: 2
+    m_Bits: 8
+  distanciaDeteccion: 0.8
+  alturaRaycast: 0.3
 --- !u!61 &8139690293127806753
 BoxCollider2D:
   m_ObjectHideFlags: 0

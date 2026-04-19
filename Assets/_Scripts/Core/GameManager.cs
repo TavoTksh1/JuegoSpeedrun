@@ -30,9 +30,17 @@ public class GameManager : MonoBehaviour
     {
         CurrentState = GameState.Playing;
         Time.timeScale = 1f;
+
+        Debug.Log($"AudioManager existe: {AudioManager.instance != null}");
+        if (AudioManager.instance != null)
+        {
+            Debug.Log($"bgAudioSource existe: {AudioManager.instance.bgAudioSource != null}");
+            Debug.Log($"musicGame existe: {AudioManager.instance.musicGame != null}");
+            AudioManager.instance.PlayMusicGame();
+        }
+
         Debug.Log("Juego iniciado");
     }
-
     public void GameOver()
     {
         if (CurrentState == GameState.GameOver) return;

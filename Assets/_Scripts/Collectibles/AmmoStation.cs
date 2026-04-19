@@ -43,6 +43,8 @@ public class AmmoStation : MonoBehaviour
             if (combat != null)
             {
                 combat.Recargar();
+                if (AudioManager.instance != null)
+                    AudioManager.instance.PlayAmmoReload();
                 disponible = false;
                 timerRecarga = tiempoRecarga;
                 ActualizarColor();

@@ -110,16 +110,17 @@ public class ChunkManager : MonoBehaviour
 
     private void GenerarChunk(bool forzarSeguro)
     {
-        float xInicioFloat = xUltimoChunk;
+        float xBase = xUltimoChunk;
         GameObject chunk = new GameObject($"Chunk_{chunksGenerados}");
         chunksActivos.Add(chunk);
 
         bool espinoAnterior = false;
         bool vacioAnterior = false;
+        float offsetAcumulado = 0f;
 
         for (int i = 0; i < seccionesPorChunk; i++)
         {
-            float x = xInicioFloat + (anchoSeccion * i) + anchoSeccion / 2f;
+            float x = xBase + offsetAcumulado + (anchoSeccion * i) + anchoSeccion / 2f;
             float roll = Random.value;
 
             bool esVacio = !forzarSeguro && roll < probVacio && !vacioAnterior && i > 0;
@@ -128,13 +129,12 @@ public class ChunkManager : MonoBehaviour
             {
                 vacioAnterior = true;
                 espinoAnterior = false;
-                xInicioFloat += anchoHueco - anchoSeccion;
+                offsetAcumulado += anchoHueco - anchoSeccion;
                 continue;
             }
 
             vacioAnterior = false;
 
-            // Pinta suelo con tilemap
             int xTileInicio = Mathf.RoundToInt(x - anchoSeccion / 2f);
             int xTileFin = Mathf.RoundToInt(x + anchoSeccion / 2f);
             PintarSuelo(xTileInicio, xTileFin);
@@ -142,7 +142,7 @@ public class ChunkManager : MonoBehaviour
             espinoAnterior = GenerarElemento(chunk, x, espinoAnterior);
         }
 
-        xUltimoChunk = xInicioFloat + (seccionesPorChunk * anchoSeccion);
+        xUltimoChunk = xBase + offsetAcumulado + (seccionesPorChunk * anchoSeccion);
         chunksGenerados++;
     }
 
@@ -260,7 +260,7 @@ public class ChunkManager : MonoBehaviour
         obs.transform.localScale = new Vector3(0.8f, 1.5f, 1f);
 
         if (Random.value > 0.5f && EnemyManager.Instance != null)
-            EnemyManager.Instance.SpawnEnemigo(new Vector2(x, 1.8f));
+            EnemyManager.Instance.SpawnEnemigo(new Vector2(x, 2.5f));
     }
 
     private void TentarPlataforma(GameObject chunk, float x, bool puedeEspino)

@@ -28,12 +28,14 @@ public class PlayerController : MonoBehaviour
     private float timerSuelo = 0f;
     private const float bufferSuelo = 0.1f;
 
+
+    private SpriteRenderer spriteRenderer;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Crea el material solo si no tiene uno asignado
         if (rb.sharedMaterial == null)
         {
             PhysicsMaterial2D mat = new PhysicsMaterial2D();
@@ -71,8 +73,11 @@ public class PlayerController : MonoBehaviour
         float inputH = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(inputH * velocidad, rb.velocity.y);
 
-        if (inputH > 0) transform.localScale = new Vector3(1, 1, 1);
-        else if (inputH < 0) transform.localScale = new Vector3(-1, 1, 1);
+        // Flip del sprite según dirección
+        if (inputH > 0 && spriteRenderer != null)
+            spriteRenderer.flipX = false;
+        else if (inputH < 0 && spriteRenderer != null)
+            spriteRenderer.flipX = true;
 
         if (animator != null)
             animator.SetBool("isWalking", inputH != 0);
@@ -148,6 +153,9 @@ public class PlayerController : MonoBehaviour
 
         if (vidaActual <= 0)
             Morir();
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayPlayerHurt();
     }
 
     private void Morir()
@@ -156,6 +164,8 @@ public class PlayerController : MonoBehaviour
 
         if (animator != null)
             animator.SetBool("isDead", true);
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayPlayerDeath();
 
         Debug.Log("Jugador murió");
         StartCoroutine(EsperarMuerte());

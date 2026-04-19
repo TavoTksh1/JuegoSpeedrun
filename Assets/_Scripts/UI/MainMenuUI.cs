@@ -15,6 +15,8 @@ public class MainMenuUI : MonoBehaviour
     {
         MostrarPanelPrincipal();
         MostrarHighScore();
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayMusicMenu();
     }
 
     // ── Menú principal ──────────────────────────────

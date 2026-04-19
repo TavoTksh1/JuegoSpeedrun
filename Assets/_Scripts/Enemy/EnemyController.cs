@@ -22,6 +22,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Color colorNormal = Color.white;
     [SerializeField] private Color colorManipulado = Color.magenta;
 
+
+    [Header("Detección")]
+    [SerializeField] private LayerMask capaDeteccion;
+    [SerializeField] private float distanciaDeteccion = 0.8f;
+    [SerializeField] private float alturaRaycast = 0.3f;
+
     private EstadoEnemigo estado;
     private Vector2 posicionInicial;
     private float direccion = 1f;
@@ -39,6 +45,7 @@ public class EnemyController : MonoBehaviour
 
     // ── Hurt ────────────────────────────────────────
     private bool estaEnHurt = false;
+
 
     private void Awake()
     {
@@ -146,7 +153,8 @@ public class EnemyController : MonoBehaviour
             animator.SetTrigger("isManipulated");
             animator.SetBool("isWalking", false);
         }
-
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayEnemyManipulated();
         espinoCercano = BuscarEspinoCercano();
         Debug.Log("Enemigo manipulado");
     }
@@ -179,21 +187,30 @@ public class EnemyController : MonoBehaviour
 
     private bool HayObstaculoEnfrente()
     {
-        Vector2 origen = transform.position;
+        Vector2 origen = (Vector2)transform.position + Vector2.up * alturaRaycast;
         Vector2 dir = Vector2.right * direccion;
-        float distanciaDeteccion = 0.8f;
 
-        // Ignora el propio collider del enemigo
-        RaycastHit2D hit = Physics2D.Raycast(origen, dir, distanciaDeteccion);
+        // Raycast horizontal — detecta paredes y espinos
+        RaycastHit2D hitPared = Physics2D.Raycast(origen, dir, distanciaDeteccion);
         Debug.DrawRay(origen, dir * distanciaDeteccion, Color.red);
 
-        if (hit.collider != null)
+        if (hitPared.collider != null)
         {
-            // Ignora el Tilemap del suelo — solo detecta obstáculos reales
-            if (hit.collider.CompareTag("Espino")) return true;
-            if (hit.collider.CompareTag("Obstaculo")) return true;
-            // Ya no detecta "Suelo" para evitar bloqueo con el Tilemap
+            if (hitPared.collider.CompareTag("Espino")) return true;
+            if (hitPared.collider.CompareTag("Obstaculo")) return true;
+            // Detecta paredes del tilemap
+            if (hitPared.collider.GetComponent<UnityEngine.Tilemaps.TilemapCollider2D>() != null)
+                return true;
         }
+
+        // Raycast hacia abajo al frente — detecta bordes/huecos
+        Vector2 origenBorde = (Vector2)transform.position + dir * distanciaDeteccion;
+        RaycastHit2D hitSuelo = Physics2D.Raycast(origenBorde, Vector2.down, 1.5f);
+        Debug.DrawRay(origenBorde, Vector2.down * 1.5f, Color.blue);
+
+        // Si no hay suelo adelante, da la vuelta
+        if (hitSuelo.collider == null)
+            return true;
 
         return false;
     }
@@ -248,7 +265,8 @@ public class EnemyController : MonoBehaviour
             Morir();
             return;
         }
-
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayEnemyHurt();
         StartCoroutine(PausarPorHurt());
     }
 
@@ -285,7 +303,8 @@ public class EnemyController : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.ResetTrigger("isManipulated");
         }
-
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayEnemyDeath();
         SoltarMonedas();
         Debug.Log("Enemigo muerto");
         StartCoroutine(EsperarMuerte());

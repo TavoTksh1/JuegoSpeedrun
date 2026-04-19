@@ -93,6 +93,17 @@ public class PlayerCombat : MonoBehaviour
         GameObject bala = Instantiate(prefab, puntoDisparo.position, Quaternion.identity);
         Bullet bulletScript = bala.GetComponent<Bullet>();
         bulletScript.Inicializar(tipo, direccion);
+
+        if (tipo == Bullet.TipoBala.Normal)
+        {
+            if (AudioManager.instance != null)
+                AudioManager.instance.PlayShootNormal();
+        }
+        else
+        {
+            if (AudioManager.instance != null)
+                AudioManager.instance.PlayShootSpecial();
+        }
     }
 
     // Llamado desde AmmoStation

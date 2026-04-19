@@ -34,15 +34,18 @@ public class SettingsManager : MonoBehaviour
     {
         MusicVolume = valor;
         PlayerPrefs.SetFloat(MUSIC_KEY, valor);
-        // Aquí después conectaremos con el AudioMixer
-        Debug.Log($"Volumen música: {valor}");
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.SetMusicVolume(valor);
     }
 
     public void SetSFXVolume(float valor)
     {
         SFXVolume = valor;
         PlayerPrefs.SetFloat(SFX_KEY, valor);
-        Debug.Log($"Volumen SFX: {valor}");
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.SetSFXVolume(valor);
     }
 
     public void SetFullscreen(bool valor)
@@ -61,5 +64,11 @@ public class SettingsManager : MonoBehaviour
 
         Screen.fullScreen = IsFullscreen;
         Debug.Log("Configuración cargada");
+
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.SetMusicVolume(MusicVolume);
+            AudioManager.instance.SetSFXVolume(SFXVolume);
+        }
     }
 }

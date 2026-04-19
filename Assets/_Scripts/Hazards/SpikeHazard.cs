@@ -19,6 +19,8 @@ public class SpikeHazard : MonoBehaviour
             PlayerController jugador = other.GetComponent<PlayerController>();
             if (jugador != null)
                 jugador.RecibirDano(danioAlJugador);
+            if (AudioManager.instance != null)
+                AudioManager.instance.PlaySpike();
         }
     }
 }

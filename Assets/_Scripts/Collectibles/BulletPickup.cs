@@ -20,6 +20,8 @@ public class BulletPickup : MonoBehaviour
             combat.AgregarBalasEspeciales(cantidad);
 
         Debug.Log($"Recogida bala {tipo} x{cantidad}");
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayBulletPickup();
         Destroy(gameObject);
     }
 }

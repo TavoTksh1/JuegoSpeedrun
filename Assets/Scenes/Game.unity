@@ -996,8 +996,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: 45}
-  m_SizeDelta: {x: 171.951, y: 50}
+  m_AnchoredPosition: {x: -272, y: 19.06799}
+  m_SizeDelta: {x: 404.0988, y: 101.8642}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &696076598
 CanvasRenderer:
@@ -1054,8 +1054,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.39
-  m_fontSizeBase: 61.39
+  m_fontSize: 88.81
+  m_fontSizeBase: 88.81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3006,8 +3006,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -253, y: -316}
-  m_SizeDelta: {x: 512, y: 165}
+  m_AnchoredPosition: {x: -484.16, y: -701.28}
+  m_SizeDelta: {x: 747.2722, y: 240.8201}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1118259761
 MonoBehaviour:
@@ -3270,8 +3270,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -37, y: -167}
-  m_SizeDelta: {x: 171.95, y: 50}
+  m_AnchoredPosition: {x: -262.59973, y: -412.83615}
+  m_SizeDelta: {x: 404.0965, y: 101.8642}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1366525705
 CanvasRenderer:
@@ -3328,8 +3328,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.39
-  m_fontSizeBase: 61.39
+  m_fontSize: 88.81
+  m_fontSizeBase: 88.81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3405,8 +3405,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 292, y: -317}
-  m_SizeDelta: {x: 512, y: 165}
+  m_AnchoredPosition: {x: 595, y: -699.05}
+  m_SizeDelta: {x: 761.1035, y: 245.2775}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1506962608
 MonoBehaviour:
@@ -3536,8 +3536,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.8413, y: 269.14}
-  m_SizeDelta: {x: 799.7903, y: 903.96}
+  m_AnchoredPosition: {x: 0.000045776, y: 437}
+  m_SizeDelta: {x: 1292.885, y: 1461.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1547126422
 MonoBehaviour:
@@ -3651,8 +3651,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278192895
-  m_fontColor: {r: 1, g: 0.037613455, b: 0, a: 1}
+    rgba: 4285098430
+  m_fontColor: {r: 0.745283, g: 0.41131186, b: 0.41131186, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3951,8 +3951,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgAudioSource: {fileID: 1671000329}
   sfxAudioSource: {fileID: 1671000330}
-  jump: {fileID: 8300000, guid: 0546c008c38e7924eb363a36c4d4e0ff, type: 3}
-  coin: {fileID: 8300000, guid: 5497d868f035b844bb1c1763458c0ecd, type: 3}
+  musicMenu: {fileID: 0}
+  musicGame: {fileID: 0}
+  sfxJump: {fileID: 0}
+  sfxShootNormal: {fileID: 0}
+  sfxShootSpecial: {fileID: 0}
+  sfxPlayerHurt: {fileID: 0}
+  sfxPlayerDeath: {fileID: 0}
+  sfxEnemyHurt: {fileID: 0}
+  sfxEnemyDeath: {fileID: 0}
+  sfxEnemyManipulated: {fileID: 0}
+  sfxCoin: {fileID: 0}
+  sfxAmmoReload: {fileID: 0}
+  sfxBulletPickup: {fileID: 0}
+  sfxSpike: {fileID: 0}
 --- !u!1 &1714302370
 GameObject:
   m_ObjectHideFlags: 0
@@ -4001,7 +4013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1737388982
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4633,8 +4645,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.39
-  m_fontSizeBase: 61.39
+  m_fontSize: 88.81
+  m_fontSizeBase: 88.81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4699,8 +4711,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -34, y: -67}
-  m_SizeDelta: {x: 171.951, y: 50}
+  m_AnchoredPosition: {x: -255.54929, y: -209.10791}
+  m_SizeDelta: {x: 404.0988, y: 101.8642}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1991406428
 PrefabInstance:
